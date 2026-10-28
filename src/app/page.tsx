@@ -42,8 +42,8 @@ async function Stats() {
   const { links, clicks } = await getStats();
   return (
     <p className="mt-10 font-mono text-sm">
-      <span className="font-bold">{links.toLocaleString("en-GB")}</span> links shortened ·{" "}
-      <span className="font-bold">{clicks.toLocaleString("en-GB")}</span> clicks followed
+      <span className="font-bold">{links.toLocaleString("en-GB")}</span> {links === 1 ? "link" : "links"} shortened ·{" "}
+      <span className="font-bold">{clicks.toLocaleString("en-GB")}</span> {clicks === 1 ? "click" : "clicks"} followed
     </p>
   );
 }

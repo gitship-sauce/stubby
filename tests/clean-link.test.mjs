@@ -18,3 +18,16 @@ test("rejects things that aren't web links", () => {
   assert.ok("error" in checkLink("hello"));
   assert.ok("error" in checkLink("javascript:alert(1)"));
 });
+
+// Episode 1: /.*=.*/ took 18 seconds on this link and froze Stubby for everyone.
+test("a 200,000-character link is cleaned in under 50 ms", () => {
+  const huge = "https://example.com/?" + "a".repeat(200_000);
+  const start = performance.now();
+  cleanLink(huge);
+  assert.ok(performance.now() - start < 50, "cleaning a long link is slow again");
+});
+
+test("links over 2,048 characters are turned away", () => {
+  assert.ok("error" in checkLink("https://example.com/?" + "a".repeat(2048)));
+  assert.ok("url" in checkLink("https://example.com/?" + "a".repeat(1000)));
+});
