@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ChannelLink } from "@/components/channel-link";
 import { Logo } from "@/components/logo";
 import { RegexSandbox } from "@/components/regex-sandbox";
 
@@ -42,6 +43,7 @@ export default function Sandbox() {
 
       <footer className="mt-auto pt-16 text-sm text-muted">
         Want the real app in its broken state? Clone the code and check out the <code className="font-mono">ep1-broken</code> tag.
+        Watch every episode on <ChannelLink>Gitship Sauce</ChannelLink>.
       </footer>
     </main>
   );

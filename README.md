@@ -2,7 +2,7 @@
 
 Long link in, short link out. Stubby also removes tracking junk like `?utm_source=...`.
 
-Stubby is the app from the Gitship Sauce series where a famous real failure breaks it each episode, and we fix it on camera. Each episode has two tags, so you can check out the app before and after the fix:
+Stubby is the app from the [Gitship Sauce](https://www.youtube.com/@gitship_sauce) series where a famous real failure breaks it each episode, and we fix it on camera. Each episode has two tags, so you can check out the app before and after the fix:
 
 | Episode | Broken | Fixed |
 | --- | --- | --- |

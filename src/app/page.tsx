@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { ChannelLink } from "@/components/channel-link";
 import { Logo } from "@/components/logo";
 import { ShortenForm } from "@/components/shorten-form";
 import { getStats } from "@/lib/links";
@@ -32,7 +33,7 @@ export default function Home() {
       </Suspense>
 
       <footer className="mt-auto pt-16 text-sm text-muted">
-        Stubby is a real app from the Gitship Sauce channel. Each episode, a famous real failure breaks it,
+        Stubby is a real app from the <ChannelLink>Gitship Sauce</ChannelLink> YouTube channel. Each episode, a famous real failure breaks it,
         and we fix it on camera.{" "}
         <Link href="/sandbox" className="font-semibold text-ink underline decoration-2 underline-offset-2">
           Break it yourself in the sandbox.
