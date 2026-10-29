@@ -35,3 +35,12 @@ create table if not exists reset_tries (
   at timestamptz not null default now()
 );
 create index if not exists reset_tries_key_at on reset_tries (key, at);
+
+-- A sign-up waiting for its email link. The password is already hashed; the account is made when the link is used.
+create table if not exists signup_tokens (
+  token_hash text primary key,
+  email text not null,
+  password_hash text not null,
+  expires_at timestamptz not null,
+  used_at timestamptz
+);

@@ -8,6 +8,7 @@ export type User = { id: number; email: string };
 const SESSION_COOKIE = "stubby_session";
 const SESSION_DAYS = 30;
 const RESET_MINUTES = 30;
+const SIGNUP_HOURS = 24;
 
 const sha256 = (text: string) => createHash("sha256").update(text).digest("hex");
 const newToken = () => randomBytes(32).toString("base64url");
@@ -97,6 +98,28 @@ export async function resetPassword(token: string, password: string): Promise<bo
   await sql`update users set password_hash = ${hash} where id = ${userId}`;
   await sql`delete from sessions where user_id = ${userId}`;
   return true;
+}
+
+// Saves a sign-up until its email link is used, and returns the token for that link. Only its hash is saved.
+export async function createSignupToken(email: string, passwordHash: string): Promise<string> {
+  const token = newToken();
+  const expires = new Date(Date.now() + SIGNUP_HOURS * 60 * 60 * 1000);
+  await sql`insert into signup_tokens (token_hash, email, password_hash, expires_at) values (${sha256(token)}, ${email}, ${passwordHash}, ${expires})`;
+  return token;
+}
+
+// Uses the sign-up link up and makes the account. Null if the link is bad or old, or the email got an account meanwhile.
+export async function finishSignup(token: string): Promise<User | null> {
+  const rows = await sql`
+    update signup_tokens set used_at = now()
+    where token_hash = ${sha256(token)} and used_at is null and expires_at > now()
+    returning email, password_hash`;
+  if (rows.length === 0) return null;
+  const made = await sql`
+    insert into users (email, password_hash) values (${rows[0].email as string}, ${rows[0].password_hash as string})
+    on conflict (email) do nothing
+    returning id, email`;
+  return made.length > 0 ? { id: Number(made[0].id), email: made[0].email as string } : null;
 }
 
 // Where links in emails point. Never built from the request's Host header, which a visitor can fake.
