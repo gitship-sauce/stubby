@@ -10,13 +10,13 @@ function makeCode(): string {
   return code;
 }
 
-// Saves the link under a new short code and returns the code.
-export async function saveLink(url: string): Promise<string> {
+// Saves the link under a new short code and returns the code. userId is set when someone logged in made it.
+export async function saveLink(url: string, userId: number | null = null): Promise<string> {
   // 56 letters, 6 places: 30 billion codes, so a clash is rare. Try again if one happens.
   for (let attempt = 0; attempt < 5; attempt++) {
     const code = makeCode();
     const rows = await sql`
-      insert into links (code, url) values (${code}, ${url})
+      insert into links (code, url, user_id) values (${code}, ${url}, ${userId})
       on conflict (code) do nothing
       returning code`;
     if (rows.length > 0) return code;
@@ -35,4 +35,14 @@ export async function followLink(code: string): Promise<string | null> {
 export async function getStats(): Promise<{ links: number; clicks: number }> {
   const rows = await sql`select count(*)::int as links, coalesce(sum(clicks), 0)::int as clicks from links`;
   return { links: rows[0].links as number, clicks: rows[0].clicks as number };
+}
+
+export type SavedLink = { code: string; url: string; clicks: number };
+
+// The 20 newest links someone made while logged in.
+export async function listLinks(userId: number): Promise<SavedLink[]> {
+  const rows = await sql`
+    select code, url, clicks from links where user_id = ${userId}
+    order by created_at desc limit 20`;
+  return rows.map((row) => ({ code: row.code as string, url: row.url as string, clicks: row.clicks as number }));
 }

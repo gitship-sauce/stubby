@@ -1,3 +1,4 @@
+import { currentUser } from "@/lib/auth";
 import { checkLink } from "@/lib/clean-link";
 import { saveLink } from "@/lib/links";
 
@@ -10,6 +11,7 @@ export async function POST(request: Request) {
   const checked = checkLink(body.url);
   if ("error" in checked) return Response.json(checked, { status: 400 });
 
-  const code = await saveLink(checked.url);
+  const user = await currentUser();
+  const code = await saveLink(checked.url, user?.id ?? null);
   return Response.json({ code, url: checked.url }, { status: 201 });
 }

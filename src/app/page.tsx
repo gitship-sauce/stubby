@@ -1,16 +1,23 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { AccountNav } from "@/components/account-nav";
 import { ChannelLink } from "@/components/channel-link";
 import { Logo } from "@/components/logo";
 import { ShortenForm } from "@/components/shorten-form";
-import { getStats } from "@/lib/links";
+import { currentUser } from "@/lib/auth";
+import { getStats, listLinks } from "@/lib/links";
 
 export default function Home() {
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-6 py-10">
-      <header className="flex items-center gap-3">
-        <Logo />
-        <span className="text-2xl font-black tracking-tight">Stubby</span>
+      <header className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <Logo />
+          <span className="text-2xl font-black tracking-tight">Stubby</span>
+        </div>
+        <Suspense fallback={null}>
+          <AccountNav />
+        </Suspense>
       </header>
 
       <section className="mt-16 sm:mt-24">
@@ -27,6 +34,10 @@ export default function Home() {
       <section className="mt-10">
         <ShortenForm />
       </section>
+
+      <Suspense fallback={null}>
+        <YourLinks />
+      </Suspense>
 
       <Suspense fallback={<p className="mt-10 h-6" />}>
         <Stats />
@@ -50,5 +61,29 @@ async function Stats() {
       <span className="font-bold">{links.toLocaleString("en-GB")}</span> {links === 1 ? "link" : "links"} shortened ·{" "}
       <span className="font-bold">{clicks.toLocaleString("en-GB")}</span> {clicks === 1 ? "click" : "clicks"} followed
     </p>
+  );
+}
+
+async function YourLinks() {
+  const user = await currentUser();
+  if (!user) return null;
+  const links = await listLinks(user.id);
+  return (
+    <section className="mt-12">
+      <h2 className="text-sm font-semibold uppercase tracking-[0.18em]">Your links</h2>
+      {links.length === 0 ? (
+        <p className="mt-3 text-muted">Links you shorten while logged in show up here.</p>
+      ) : (
+        <ul className="mt-3 divide-y-[3px] divide-ink rounded-3xl border-[3px] border-ink bg-white">
+          {links.map((link) => (
+            <li key={link.code} className="flex flex-wrap items-baseline justify-between gap-3 px-5 py-3">
+              <a href={`/${link.code}`} className="font-mono font-bold underline decoration-2 underline-offset-2">/{link.code}</a>
+              <span className="min-w-0 flex-1 truncate font-mono text-sm text-ink/70">{link.url}</span>
+              <span className="font-mono text-sm">{link.clicks} {link.clicks === 1 ? "click" : "clicks"}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }
