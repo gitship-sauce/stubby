@@ -32,12 +32,6 @@ export async function followLink(code: string): Promise<string | null> {
   return rows.length > 0 ? (rows[0].url as string) : null;
 }
 
-// Where the code points, without counting a click. Null if there's no such code.
-export async function peekLink(code: string): Promise<string | null> {
-  const rows = await sql`select url from links where code = ${code}`;
-  return rows.length > 0 ? (rows[0].url as string) : null;
-}
-
 export async function getStats(): Promise<{ links: number; clicks: number }> {
   const rows = await sql`select count(*)::int as links, coalesce(sum(clicks), 0)::int as clicks from links`;
   return { links: rows[0].links as number, clicks: rows[0].clicks as number };

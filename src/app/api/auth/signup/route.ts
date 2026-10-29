@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   const problem = checkNewPassword(body?.password);
   if (problem) return Response.json({ error: problem }, { status: 400 });
 
-  if (process.env.BETA === "on") {
+  if (process.env.SAFE_SIGNUP_REPLY === "on") {
     // On Vercel the first x-forwarded-for address is the visitor's, set by Vercel itself.
     const visitor = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
     if (await tooManySignupTries(email, visitor)) {

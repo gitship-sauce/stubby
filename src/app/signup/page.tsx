@@ -17,8 +17,8 @@ export default function SignUp() {
         ]}
         submit="Sign up"
         busyText="Making your account…"
-        // With the beta sign-up, the account is made from the email link, so the reply stays on the page.
-        goTo={process.env.BETA === "on" ? undefined : "/"}
+        // With the safe reply, the account is made from the email link, so the reply stays on the page.
+        goTo={process.env.SAFE_SIGNUP_REPLY === "on" ? undefined : "/"}
       />
       <p className="mt-6 text-sm">
         Already have one?{" "}
