@@ -28,3 +28,10 @@ create table if not exists password_resets (
 
 alter table links add column if not exists user_id bigint references users (id) on delete set null;
 create index if not exists links_user_id on links (user_id);
+
+-- One row per forgot-password request, so a stranger can't try thousands of emails.
+create table if not exists reset_tries (
+  key text not null,
+  at timestamptz not null default now()
+);
+create index if not exists reset_tries_key_at on reset_tries (key, at);

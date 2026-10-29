@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "db:setup": "node --env-file=.env.local scripts/setup-db.mjs",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "test:reset": "node --env-file=.env.local --test tests/forgot-password.e2e.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",
