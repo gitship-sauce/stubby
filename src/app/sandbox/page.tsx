@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChannelLink } from "@/components/channel-link";
 import { Logo } from "@/components/logo";
 import { RegexSandbox } from "@/components/regex-sandbox";
+import { ResetSandbox } from "@/components/reset-sandbox";
 
 export const metadata: Metadata = {
   title: "Stubby sandbox: break it yourself",
@@ -41,8 +42,21 @@ export default function Sandbox() {
         </div>
       </section>
 
+      <section className="mt-16">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted">Episode 2</p>
+        <h2 className="mt-1 text-3xl font-black tracking-tight">The forgot-password page that said who has an account</h2>
+        <p className="mt-3 max-w-2xl text-muted">
+          Before the fix, Stubby answered &ldquo;No account found&rdquo; for a made-up email, and took about a second
+          longer for a real account, because it sent the email first. This is a copy of that page, running on your
+          device: nothing is sent to Stubby. The waits copy the times we measured on the real app.
+        </p>
+        <div className="mt-6">
+          <ResetSandbox />
+        </div>
+      </section>
+
       <footer className="mt-auto pt-16 text-sm text-muted">
-        Want the real app in its broken state? Clone the code and check out the <code className="font-mono">ep1-broken</code> tag.
+        Want the real app in its broken state? Clone the code and check out the <code className="font-mono">ep1-broken</code> or <code className="font-mono">ep2-broken</code> tag.
         Watch every episode on <ChannelLink>Gitship Sauce</ChannelLink>.
       </footer>
     </main>
