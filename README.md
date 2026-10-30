@@ -17,7 +17,11 @@ Stubby is the app from the [Gitship Sauce](https://www.youtube.com/@gitship_sauc
 3. `pnpm install`, then `pnpm db:setup`, then `pnpm dev`.
 4. Open http://localhost:3000
 
-`pnpm build` runs `tests/link-target.test.mjs` first, so a switch that sends short links anywhere but their saved site stops the build. `pnpm test` runs it with the link cleaning checks. `pnpm test:reset` checks that the forgot-password page gives every email the same answer in the same time; it needs Stubby running (see the top of `tests/forgot-password.e2e.mjs`).
+`pnpm build` runs `tests/link-target.test.mjs` and `tests/show-more.test.mjs` first, so a switch that sends short links anywhere but their saved site, or a broken Show more, stops the build. `pnpm test` runs it with the link cleaning checks. `pnpm test:reset` checks that the forgot-password page gives every email the same answer in the same time; it needs Stubby running (see the top of `tests/forgot-password.e2e.mjs`).
+
+## Your links
+
+Log in and the home page lists the links you made, newest first, with the day each was made and a Copy button. It draws the first 20; **Show more** asks `/api/links/mine` for the next 20 at a time (`src/lib/show-more.ts`).
 
 ## Signing up on the live site
 
