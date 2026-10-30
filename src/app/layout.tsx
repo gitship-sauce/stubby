@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -16,6 +16,9 @@ export const metadata: Metadata = {
   title: "Stubby: long link in, short link out",
   description: "A link shortener that gets broken by famous real failures, then fixed, on Gitship Sauce.",
 };
+
+// Phone browsers tint their bars with the page colour (--color-paper in globals.css).
+export const viewport: Viewport = { themeColor: "#fff6e9" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
