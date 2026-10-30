@@ -50,7 +50,10 @@ export default function Home() {
         and we fix it on camera.{" "}
         <Link href="/sandbox" className="font-semibold text-ink underline decoration-2 underline-offset-2">
           Break it yourself in the sandbox.
-        </Link>
+        </Link>{" "}
+        <a href="https://github.com/gitship-sauce/stubby" className="font-semibold text-ink underline decoration-2 underline-offset-2">
+          Read the code.
+        </a>
       </footer>
     </main>
   );
