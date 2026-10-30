@@ -1,3 +1,4 @@
+import { CopyButton } from "@/components/copy-button";
 import type { SavedLink } from "@/lib/show-more";
 
 // "30 Oct 2026". UTC on both sides, so the server and the browser draw the same date.
@@ -11,6 +12,7 @@ export function LinkRow({ link }: { link: SavedLink }) {
       <span className="min-w-0 flex-1 truncate font-mono text-sm text-ink/70">{link.url}</span>
       <span className="font-mono text-sm text-ink/70">{made.format(new Date(link.made))}</span>
       <span className="font-mono text-sm">{link.clicks} {link.clicks === 1 ? "click" : "clicks"}</span>
+      <CopyButton code={link.code} />
     </li>
   );
 }
