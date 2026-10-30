@@ -1,5 +1,6 @@
 import { randomInt } from "node:crypto";
 import { sql } from "@/lib/db";
+import type { SavedLink } from "@/lib/show-more";
 
 // No 0/O or 1/l/I, so a code read out loud can't be typed wrong.
 const letters = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -37,12 +38,12 @@ export async function getStats(): Promise<{ links: number; clicks: number }> {
   return { links: rows[0].links as number, clicks: rows[0].clicks as number };
 }
 
-export type SavedLink = { code: string; url: string; clicks: number };
+const PAGE_SIZE = 20;
 
-// The 20 newest links someone made while logged in.
-export async function listLinks(userId: number): Promise<SavedLink[]> {
+// Someone's links, newest first, 20 to a page. Page 1 is the newest 20.
+export async function listLinks(userId: number, page = 1): Promise<SavedLink[]> {
   const rows = await sql`
     select code, url, clicks from links where user_id = ${userId}
-    order by created_at desc limit 20`;
+    order by created_at desc, code limit ${PAGE_SIZE} offset ${(page - 1) * PAGE_SIZE}`;
   return rows.map((row) => ({ code: row.code as string, url: row.url as string, clicks: row.clicks as number }));
 }

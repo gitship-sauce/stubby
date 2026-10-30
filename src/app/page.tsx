@@ -3,7 +3,9 @@ import { Suspense } from "react";
 import { AccountNav } from "@/components/account-nav";
 import { ChannelLink } from "@/components/channel-link";
 import { Logo } from "@/components/logo";
+import { LinkRow } from "@/components/link-row";
 import { ShortenForm } from "@/components/shorten-form";
+import { ShowMore } from "@/components/show-more";
 import { currentUser } from "@/lib/auth";
 import { getStats, listLinks } from "@/lib/links";
 
@@ -74,15 +76,14 @@ async function YourLinks() {
       {links.length === 0 ? (
         <p className="mt-3 text-muted">Links you shorten while logged in show up here.</p>
       ) : (
-        <ul className="mt-3 divide-y-[3px] divide-ink rounded-3xl border-[3px] border-ink bg-white">
-          {links.map((link) => (
-            <li key={link.code} className="flex flex-wrap items-baseline justify-between gap-3 px-5 py-3">
-              <a href={`/${link.code}`} className="font-mono font-bold underline decoration-2 underline-offset-2">/{link.code}</a>
-              <span className="min-w-0 flex-1 truncate font-mono text-sm text-ink/70">{link.url}</span>
-              <span className="font-mono text-sm">{link.clicks} {link.clicks === 1 ? "click" : "clicks"}</span>
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className="mt-3 divide-y-[3px] divide-ink rounded-3xl border-[3px] border-ink bg-white">
+            {links.map((link) => (
+              <LinkRow key={link.code} link={link} />
+            ))}
+          </ul>
+          <ShowMore userId={user.id} />
+        </>
       )}
     </section>
   );
