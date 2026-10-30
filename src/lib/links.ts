@@ -38,6 +38,12 @@ export async function getStats(): Promise<{ links: number; clicks: number }> {
   return { links: rows[0].links as number, clicks: rows[0].clicks as number };
 }
 
+// How many links someone made while logged in, for the Your links heading.
+export async function countLinks(userId: number): Promise<number> {
+  const rows = await sql`select count(*)::int as links from links where user_id = ${userId}`;
+  return rows[0].links as number;
+}
+
 const PAGE_SIZE = 20;
 
 // Someone's links, newest first, 20 to a page. Page 1 is the newest 20.

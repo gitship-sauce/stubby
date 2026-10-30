@@ -7,7 +7,7 @@ import { LinkRow } from "@/components/link-row";
 import { ShortenForm } from "@/components/shorten-form";
 import { ShowMore } from "@/components/show-more";
 import { currentUser } from "@/lib/auth";
-import { getStats, listLinks } from "@/lib/links";
+import { countLinks, getStats, listLinks } from "@/lib/links";
 
 export default function Home() {
   return (
@@ -72,10 +72,12 @@ async function Stats() {
 async function YourLinks() {
   const user = await currentUser();
   if (!user) return null;
-  const links = await listLinks(user.id);
+  const [links, total] = await Promise.all([listLinks(user.id), countLinks(user.id)]);
   return (
     <section className="mt-12">
-      <h2 className="text-sm font-semibold uppercase tracking-[0.18em]">Your links</h2>
+      <h2 className="text-sm font-semibold uppercase tracking-[0.18em]">
+        Your links{total > 0 && ` · ${total.toLocaleString("en-GB")}`}
+      </h2>
       {links.length === 0 ? (
         <p className="mt-3 text-muted">Links you shorten while logged in show up here.</p>
       ) : (
