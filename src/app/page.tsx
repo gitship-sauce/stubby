@@ -87,7 +87,7 @@ async function YourLinks() {
               <LinkRow key={link.code} link={link} />
             ))}
           </ul>
-          {links.length === 20 && <ShowMore userId={user.id} />}
+          {links.length === 20 && <ShowMore />}
         </>
       )}
     </section>

@@ -8,16 +8,16 @@ export type ShowMoreNeeds = {
   listLinks: (userId: number, page: number) => Promise<SavedLink[]>;
 };
 
-export type ShowMoreAnswer = { status: 200; links: SavedLink[] } | { status: 400 | 401 | 403; error: string };
+export type ShowMoreAnswer = { status: 200; links: SavedLink[] } | { status: 400 | 401; error: string };
 
+// Whose links comes from the login only. A request can carry any number, so a user number in it is never used:
+// that is how anyone could read anyone's list (Why It Broke, episode 4).
 export async function showMore(needs: ShowMoreNeeds, params: URLSearchParams): Promise<ShowMoreAnswer> {
-  const asked = Number(params.get("user"));
   const page = Number(params.get("page") ?? "2");
-  if (!Number.isInteger(asked) || !Number.isInteger(page) || page < 1 || page > 1000) {
-    return { status: 400, error: "Send the page as ?user=<your number>&page=<number>." };
+  if (!Number.isInteger(page) || page < 1 || page > 1000) {
+    return { status: 400, error: "Send the page as ?page=<number>." };
   }
-  // The page always sends the logged-in user's own number, so looking up the login again was a second trip to the
-  // database on every click. Use the number the page sent.
-  const user = asked;
-  return { status: 200, links: await needs.listLinks(user, page) };
+  const me = await needs.currentUser();
+  if (!me) return { status: 401, error: "Log in to see your links." };
+  return { status: 200, links: await needs.listLinks(me.id, page) };
 }

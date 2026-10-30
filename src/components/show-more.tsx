@@ -7,7 +7,7 @@ import type { SavedLink } from "@/lib/show-more";
 const PAGE_SIZE = 20;
 
 // Loads Your links 20 at a time, after the first 20 the page drew. A short page means there are no more.
-export function ShowMore({ userId }: { userId: number }) {
+export function ShowMore() {
   const [links, setLinks] = useState<SavedLink[]>([]);
   const [page, setPage] = useState(2);
   const [busy, setBusy] = useState(false);
@@ -18,7 +18,7 @@ export function ShowMore({ userId }: { userId: number }) {
     setBusy(true);
     setError(null);
     try {
-      const response = await fetch(`/api/links/mine?user=${userId}&page=${page}`);
+      const response = await fetch(`/api/links/mine?page=${page}`);
       const body = await response.json();
       if (!response.ok) setError(body.error ?? "Something went wrong.");
       else {
