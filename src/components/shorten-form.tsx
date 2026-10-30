@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MAX_LINK_LENGTH } from "@/lib/clean-link";
 
 type Result = { code: string; url: string };
 
@@ -43,6 +44,8 @@ export function ShortenForm() {
           id="link"
           type="text"
           required
+          maxLength={MAX_LINK_LENGTH}
+          aria-describedby="link-hint"
           value={link}
           onChange={(event) => setLink(event.target.value)}
           placeholder="https://a-very-long-link.com/that/goes/on?and=on"
@@ -56,6 +59,9 @@ export function ShortenForm() {
           {busy ? "Shortening…" : "Shorten"}
         </button>
       </form>
+      <p id="link-hint" className="mt-2 text-sm text-muted">
+        Links up to {MAX_LINK_LENGTH.toLocaleString("en-GB")} characters.
+      </p>
 
       {error && (
         <p role="alert" className="mt-4 rounded-2xl border-[3px] border-ink bg-white px-5 py-3 font-medium">
