@@ -11,6 +11,10 @@ Stubby is the app from the [Gitship Sauce](https://www.youtube.com/@gitship_sauc
 | 3. The old switch that broke every link | `ep3-broken` | `ep3-fixed` |
 | 4. Heartbleed, and the user number Stubby believed | `ep4-broken` | `ep4-fixed` |
 
+## Sandbox
+
+[/sandbox](https://stubby-gitship.vercel.app/sandbox) has one tab per episode, each running only in your browser. Add `?ep=<number>` to open one episode's tab, e.g. [/sandbox?ep=4](https://stubby-gitship.vercel.app/sandbox?ep=4).
+
 ## Run it
 
 1. Make a free database on [Neon](https://neon.tech) and copy its connection string.

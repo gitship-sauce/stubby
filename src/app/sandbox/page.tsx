@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { ChannelLink } from "@/components/channel-link";
 import { Logo } from "@/components/logo";
 import { NumberSandbox } from "@/components/number-sandbox";
 import { RegexSandbox } from "@/components/regex-sandbox";
+import { type SandboxEpisode, SandboxTabs, SandboxTabsFromUrl } from "@/components/sandbox-tabs";
 import { ResetSandbox } from "@/components/reset-sandbox";
 import { SwitchSandbox } from "@/components/switch-sandbox";
 
@@ -11,6 +13,78 @@ export const metadata: Metadata = {
   title: "Stubby sandbox: break it yourself",
   description: "Try each episode's failure on your own device. Nothing here runs on Stubby's server.",
 };
+
+// One entry per episode, oldest first; the last one opens by default.
+const episodes: SandboxEpisode[] = [
+  {
+    n: 1,
+    title: "One regex froze the app",
+    panel: (
+      <>
+        <h2 className="text-3xl font-black tracking-tight">One regex froze the whole app</h2>
+        <p className="mt-3 max-w-2xl text-muted">
+          Stubby once checked every link with <code className="font-mono text-ink">/.*=.*/</code>. On a long link with
+          no &ldquo;=&rdquo;, it tries every way to split the link. Double the length and it takes about four times
+          longer. On the server, every other visitor had to wait too.
+        </p>
+        <div className="mt-6">
+          <RegexSandbox />
+        </div>
+      </>
+    ),
+  },
+  {
+    n: 2,
+    title: "The forgot-password leak",
+    panel: (
+      <>
+        <h2 className="text-3xl font-black tracking-tight">The forgot-password page that said who has an account</h2>
+        <p className="mt-3 max-w-2xl text-muted">
+          Before the fix, Stubby answered &ldquo;No account found&rdquo; for a made-up email, and took about a second
+          longer for a real account, because it sent the email first. This is a copy of that page, running on your
+          device: nothing is sent to Stubby. The waits copy the times we measured on the real app.
+        </p>
+        <div className="mt-6">
+          <ResetSandbox />
+        </div>
+      </>
+    ),
+  },
+  {
+    n: 3,
+    title: "The old switch",
+    panel: (
+      <>
+        <h2 className="text-3xl font-black tracking-tight">The old switch that broke every link</h2>
+        <p className="mt-3 max-w-2xl text-muted">
+          Before the fix, the safe sign-up reply was put behind an old switch called BETA. A shelved link preview,
+          with no button to go on, still checked that switch. Turn the switch on, click the link, and see where you
+          end up. This copy runs on your device: nothing is sent to Stubby.
+        </p>
+        <div className="mt-6">
+          <SwitchSandbox />
+        </div>
+      </>
+    ),
+  },
+  {
+    n: 4,
+    title: "The believed number",
+    panel: (
+      <>
+        <h2 className="text-3xl font-black tracking-tight">The user number Stubby believed</h2>
+        <p className="mt-3 max-w-2xl text-muted">
+          Before the fix, Show more sent your user number with the request, and the server believed it. Change the
+          number, and you got someone else&apos;s list. Heartbleed made the same kind of mistake with a length. This
+          copy runs on your device: nothing is sent to Stubby.
+        </p>
+        <div className="mt-6">
+          <NumberSandbox />
+        </div>
+      </>
+    ),
+  },
+];
 
 export default function Sandbox() {
   return (
@@ -31,57 +105,10 @@ export default function Sandbox() {
         </p>
       </section>
 
-      <section className="mt-12">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted">Episode 1</p>
-        <h2 className="mt-1 text-3xl font-black tracking-tight">One regex froze the whole app</h2>
-        <p className="mt-3 max-w-2xl text-muted">
-          Stubby once checked every link with <code className="font-mono text-ink">/.*=.*/</code>. On a long link with
-          no &ldquo;=&rdquo;, it tries every way to split the link. Double the length and it takes about four times
-          longer. On the server, every other visitor had to wait too.
-        </p>
-        <div className="mt-6">
-          <RegexSandbox />
-        </div>
-      </section>
 
-      <section className="mt-16">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted">Episode 2</p>
-        <h2 className="mt-1 text-3xl font-black tracking-tight">The forgot-password page that said who has an account</h2>
-        <p className="mt-3 max-w-2xl text-muted">
-          Before the fix, Stubby answered &ldquo;No account found&rdquo; for a made-up email, and took about a second
-          longer for a real account, because it sent the email first. This is a copy of that page, running on your
-          device: nothing is sent to Stubby. The waits copy the times we measured on the real app.
-        </p>
-        <div className="mt-6">
-          <ResetSandbox />
-        </div>
-      </section>
-
-      <section className="mt-16">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted">Episode 3</p>
-        <h2 className="mt-1 text-3xl font-black tracking-tight">The old switch that broke every link</h2>
-        <p className="mt-3 max-w-2xl text-muted">
-          Before the fix, the safe sign-up reply was put behind an old switch called BETA. A shelved link preview,
-          with no button to go on, still checked that switch. Turn the switch on, click the link, and see where you
-          end up. This copy runs on your device: nothing is sent to Stubby.
-        </p>
-        <div className="mt-6">
-          <SwitchSandbox />
-        </div>
-      </section>
-
-      <section className="mt-16">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted">Episode 4</p>
-        <h2 className="mt-1 text-3xl font-black tracking-tight">The user number Stubby believed</h2>
-        <p className="mt-3 max-w-2xl text-muted">
-          Before the fix, Show more sent your user number with the request, and the server believed it. Change the
-          number, and you got someone else&apos;s list. Heartbleed made the same kind of mistake with a length. This
-          copy runs on your device: nothing is sent to Stubby.
-        </p>
-        <div className="mt-6">
-          <NumberSandbox />
-        </div>
-      </section>
+      <Suspense fallback={<SandboxTabs episodes={episodes} active={episodes[episodes.length - 1].n} />}>
+        <SandboxTabsFromUrl episodes={episodes} />
+      </Suspense>
 
       <footer className="mt-auto pt-16 text-sm text-muted">
         Want the real app in its broken state? Clone the code and check out the <code className="font-mono">ep1-broken</code>, <code className="font-mono">ep2-broken</code>, <code className="font-mono">ep3-broken</code> or <code className="font-mono">ep4-broken</code> tag.
