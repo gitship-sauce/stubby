@@ -21,6 +21,9 @@ export async function checkPassword(password: string, stored: string): Promise<b
 }
 
 // The password rules, checked on sign-up and reset. The upper limit stops someone making scrypt chew on megabytes.
+// Shown under new-password boxes. Keep it in step with checkNewPassword below.
+export const PASSWORD_HINT = "8 to 128 characters. A short sentence is easy to remember and hard to guess.";
+
 export function checkNewPassword(password: unknown): string | null {
   if (typeof password !== "string" || password.length < 8) return "Use a password of at least 8 characters.";
   if (password.length > 128) return "Use a password of at most 128 characters.";

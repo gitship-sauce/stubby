@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type Field = { name: string; label: string; type: "email" | "password"; autoComplete: string };
+// hint shows under the box before anyone types, like the password rule.
+type Field = { name: string; label: string; type: "email" | "password"; autoComplete: string; hint?: string };
 
 type Props = {
   endpoint: string;
@@ -61,6 +62,7 @@ export function AuthForm({ endpoint, fields, submit, busyText, extra, goTo }: Pr
             onChange={(event) => setValues({ ...values, [field.name]: event.target.value })}
             className="rounded-2xl border-[3px] border-ink bg-white px-5 py-3 font-mono text-base font-normal outline-none focus:shadow-[4px_4px_0_var(--color-ink)]"
           />
+          {field.hint && <span className="text-sm font-normal text-muted">{field.hint}</span>}
         </label>
       ))}
       <button

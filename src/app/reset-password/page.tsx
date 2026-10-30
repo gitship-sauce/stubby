@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { AuthForm } from "@/components/auth-form";
 import { PageShell } from "@/components/page-shell";
+import { PASSWORD_HINT } from "@/lib/password";
 
 export const metadata: Metadata = { title: "Set a new password · Stubby" };
 
@@ -32,7 +33,7 @@ async function ResetForm({ searchParams }: Pick<PageProps<"/reset-password">, "s
   return (
     <AuthForm
       endpoint="/api/auth/reset-password"
-      fields={[{ name: "password", label: "New password (8 characters or more)", type: "password", autoComplete: "new-password" }]}
+      fields={[{ name: "password", label: "New password", type: "password", autoComplete: "new-password", hint: PASSWORD_HINT }]}
       submit="Save new password"
       busyText="Saving…"
       extra={{ token }}

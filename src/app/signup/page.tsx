@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AuthForm } from "@/components/auth-form";
 import { PageShell } from "@/components/page-shell";
+import { PASSWORD_HINT } from "@/lib/password";
 
 export const metadata: Metadata = { title: "Sign up · Stubby" };
 
@@ -13,7 +14,7 @@ export default function SignUp() {
         endpoint="/api/auth/signup"
         fields={[
           { name: "email", label: "Email", type: "email", autoComplete: "email" },
-          { name: "password", label: "Password (8 characters or more)", type: "password", autoComplete: "new-password" },
+          { name: "password", label: "Password", type: "password", autoComplete: "new-password", hint: PASSWORD_HINT },
         ]}
         submit="Sign up"
         busyText="Making your account…"
