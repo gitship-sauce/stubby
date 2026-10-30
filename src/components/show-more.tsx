@@ -4,12 +4,15 @@ import { useState } from "react";
 import { LinkRow } from "@/components/link-row";
 import type { SavedLink } from "@/lib/show-more";
 
-// Loads Your links 20 at a time, after the first 20 the page drew.
+const PAGE_SIZE = 20;
+
+// Loads Your links 20 at a time, after the first 20 the page drew. A short page means there are no more.
 export function ShowMore({ userId }: { userId: number }) {
   const [links, setLinks] = useState<SavedLink[]>([]);
   const [page, setPage] = useState(2);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [done, setDone] = useState(false);
 
   async function load() {
     setBusy(true);
@@ -21,6 +24,7 @@ export function ShowMore({ userId }: { userId: number }) {
       else {
         setLinks([...links, ...body.links]);
         setPage(page + 1);
+        if (body.links.length < PAGE_SIZE) setDone(true);
       }
     } catch {
       setError("Stubby didn't answer. Check your connection and try again.");
@@ -38,14 +42,16 @@ export function ShowMore({ userId }: { userId: number }) {
           ))}
         </ul>
       )}
-      <button
-        type="button"
-        onClick={load}
-        disabled={busy}
-        className="mt-3 rounded-xl border-[3px] border-ink bg-white px-4 py-1.5 font-bold disabled:opacity-60"
-      >
-        {busy ? "Loading…" : "Show more"}
-      </button>
+      {!done && (
+        <button
+          type="button"
+          onClick={load}
+          disabled={busy}
+          className="mt-3 rounded-xl border-[3px] border-ink bg-white px-4 py-1.5 font-bold disabled:opacity-60"
+        >
+          {busy ? "Loading…" : "Show more"}
+        </button>
+      )}
       {error && (
         <p role="alert" className="mt-3 rounded-2xl border-[3px] border-ink bg-white px-5 py-3 font-medium">
           {error}
