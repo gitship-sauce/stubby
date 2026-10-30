@@ -1,6 +1,7 @@
 // "Show more" under Your links asks for the next page of links. The login and the database are passed in, so a test
 // can run this exact code without either.
-export type SavedLink = { code: string; url: string; clicks: number };
+// made is an ISO date, so it reads the same on the server and in the browser.
+export type SavedLink = { code: string; url: string; clicks: number; made: string };
 
 export type ShowMoreNeeds = {
   currentUser: () => Promise<{ id: number } | null>;

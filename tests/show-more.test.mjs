@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { showMore } from "../src/lib/show-more.ts";
 
-const myLinks = [{ code: "abc123", url: "https://example.com/page", clicks: 2 }];
+const myLinks = [{ code: "abc123", url: "https://example.com/page", clicks: 2, made: "2026-10-30T00:00:00.000Z" }];
 
 test("Show more lists your next page of links", async () => {
   const needs = { currentUser: async () => ({ id: 7 }), listLinks: async () => myLinks };

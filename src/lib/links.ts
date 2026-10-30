@@ -43,7 +43,12 @@ const PAGE_SIZE = 20;
 // Someone's links, newest first, 20 to a page. Page 1 is the newest 20.
 export async function listLinks(userId: number, page = 1): Promise<SavedLink[]> {
   const rows = await sql`
-    select code, url, clicks from links where user_id = ${userId}
+    select code, url, clicks, created_at from links where user_id = ${userId}
     order by created_at desc, code limit ${PAGE_SIZE} offset ${(page - 1) * PAGE_SIZE}`;
-  return rows.map((row) => ({ code: row.code as string, url: row.url as string, clicks: row.clicks as number }));
+  return rows.map((row) => ({
+    code: row.code as string,
+    url: row.url as string,
+    clicks: row.clicks as number,
+    made: new Date(row.created_at as string).toISOString(),
+  }));
 }
