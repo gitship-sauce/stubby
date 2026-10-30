@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ChannelLink } from "@/components/channel-link";
 import { Logo } from "@/components/logo";
+import { NumberSandbox } from "@/components/number-sandbox";
 import { RegexSandbox } from "@/components/regex-sandbox";
 import { ResetSandbox } from "@/components/reset-sandbox";
 import { SwitchSandbox } from "@/components/switch-sandbox";
@@ -69,8 +70,21 @@ export default function Sandbox() {
         </div>
       </section>
 
+      <section className="mt-16">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted">Episode 4</p>
+        <h2 className="mt-1 text-3xl font-black tracking-tight">The user number Stubby believed</h2>
+        <p className="mt-3 max-w-2xl text-muted">
+          Before the fix, Show more sent your user number with the request, and the server believed it. Change the
+          number, and you got someone else&apos;s list. Heartbleed made the same kind of mistake with a length. This
+          copy runs on your device: nothing is sent to Stubby.
+        </p>
+        <div className="mt-6">
+          <NumberSandbox />
+        </div>
+      </section>
+
       <footer className="mt-auto pt-16 text-sm text-muted">
-        Want the real app in its broken state? Clone the code and check out the <code className="font-mono">ep1-broken</code>, <code className="font-mono">ep2-broken</code> or <code className="font-mono">ep3-broken</code> tag.
+        Want the real app in its broken state? Clone the code and check out the <code className="font-mono">ep1-broken</code>, <code className="font-mono">ep2-broken</code>, <code className="font-mono">ep3-broken</code> or <code className="font-mono">ep4-broken</code> tag.
         Watch every episode on <ChannelLink>Gitship Sauce</ChannelLink>.
       </footer>
     </main>
