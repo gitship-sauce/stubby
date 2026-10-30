@@ -15,6 +15,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Stubby: long link in, short link out",
   description: "A link shortener that gets broken by famous real failures, then fixed, on Gitship Sauce.",
+  // What a chat app or social site shows when someone shares Stubby's home page.
+  openGraph: {
+    title: "Stubby: long link in, short link out",
+    description: "A link shortener that gets broken by famous real failures, then fixed, on Gitship Sauce.",
+    siteName: "Stubby",
+    type: "website",
+  },
 };
 
 // Phone browsers tint their bars with the page colour (--color-paper in globals.css).
