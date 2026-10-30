@@ -25,6 +25,18 @@ export async function tooManySignupTries(email: string, visitor: string): Promis
   return tooManyTries(`signup-email:${email}`, `signup-visitor:${visitor}`);
 }
 
+const LINKS_PER_VISITOR = 60;
+
+// Shortening has its own limit, per visitor, so one script can't fill the database with links.
+export async function tooManyLinks(visitor: string): Promise<boolean> {
+  const key = `shorten-visitor:${visitor}`;
+  await sql`insert into reset_tries (key) values (${key})`;
+  const rows = await sql`
+    select count(*)::int as tries from reset_tries
+    where key = ${key} and at > now() - make_interval(mins => ${WINDOW_MINUTES})`;
+  return (rows[0].tries as number) > LINKS_PER_VISITOR;
+}
+
 export async function forgetOldResetTries(): Promise<void> {
   await sql`delete from reset_tries where at < now() - interval '1 day'`;
 }
