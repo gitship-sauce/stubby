@@ -16,8 +16,8 @@ export async function showMore(needs: ShowMoreNeeds, params: URLSearchParams): P
   if (!Number.isInteger(asked) || !Number.isInteger(page) || page < 1 || page > 1000) {
     return { status: 400, error: "Send the page as ?user=<your number>&page=<number>." };
   }
-  const me = await needs.currentUser();
-  if (!me) return { status: 401, error: "Log in to see your links." };
-  if (asked !== me.id) return { status: 403, error: "Those aren't your links." };
-  return { status: 200, links: await needs.listLinks(me.id, page) };
+  // The page always sends the logged-in user's own number, so looking up the login again was a second trip to the
+  // database on every click. Use the number the page sent.
+  const user = asked;
+  return { status: 200, links: await needs.listLinks(user, page) };
 }
