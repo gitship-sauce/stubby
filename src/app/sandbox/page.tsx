@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { ChannelLink } from "@/components/channel-link";
+import { CleanupSandbox } from "@/components/cleanup-sandbox";
 import { Logo } from "@/components/logo";
 import { NumberSandbox } from "@/components/number-sandbox";
 import { RegexSandbox } from "@/components/regex-sandbox";
@@ -84,6 +85,23 @@ const episodes: SandboxEpisode[] = [
       </>
     ),
   },
+  {
+    n: 5,
+    title: "The cleanup with no limit",
+    panel: (
+      <>
+        <h2 className="text-3xl font-black tracking-tight">One missing zero, three thousand links gone</h2>
+        <p className="mt-3 max-w-2xl text-muted">
+          Before the fix, the cleanup deleted whatever the days matched. Type 3 instead of 30 and it takes 3,000 of
+          5,000 links. Amazon S3 was unavailable for a whole region in 2017 after one wrong input to a command. After the fix, a run over 500
+          links stops with nothing deleted. This copy runs on your device: nothing is sent to Stubby.
+        </p>
+        <div className="mt-6">
+          <CleanupSandbox />
+        </div>
+      </>
+    ),
+  },
 ];
 
 export default function Sandbox() {
@@ -111,7 +129,7 @@ export default function Sandbox() {
       </Suspense>
 
       <footer className="mt-auto pt-16 text-sm text-muted">
-        Want the real app in its broken state? Clone the code and check out the <code className="font-mono">ep1-broken</code>, <code className="font-mono">ep2-broken</code>, <code className="font-mono">ep3-broken</code> or <code className="font-mono">ep4-broken</code> tag.
+        Want the real app in its broken state? Clone the code and check out the <code className="font-mono">ep1-broken</code>, <code className="font-mono">ep2-broken</code>, <code className="font-mono">ep3-broken</code>, <code className="font-mono">ep4-broken</code> or <code className="font-mono">ep5-broken</code> tag.
         Watch every episode on <ChannelLink>Gitship Sauce</ChannelLink>.
       </footer>
     </main>
